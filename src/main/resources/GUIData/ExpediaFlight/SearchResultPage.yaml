@@ -20,4 +20,8 @@ elements:
       durationLabel:
         locators:
           US: "css=.primary.duration-emphasis"
+          
+          pageValidators: [
+            sortBySelectList.isVisible  
+  ]
         

@@ -23,6 +23,10 @@ elements:
   searchButton:
     locators:
       US: "css=#search-button"
+  departingAndReturningExpediaDatePicker:
+    locators:
+      US: "css=.cal"
+  
   
 pageValidators: [
   flightLink.isVisible  
