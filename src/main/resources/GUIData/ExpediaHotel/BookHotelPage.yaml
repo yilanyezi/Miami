@@ -1,0 +1,24 @@
+baseClass: "com.paypal.selion.testcomponents.BasicPageImpl"
+pageTitle:
+  US: "Expedia: Book Hotel Page"
+  
+elements:
+  bookHotelButton:
+    locators:
+      US: "css=#mock-book-button"
+  searchedHotelContainer:
+    locators:
+      US: "css=.rate-plan.rate-plan-first:nth-child(1)"
+    containerElements:
+      bookFinalHotelButton:
+        locators:
+          US: "css=.rate-plan.rate-plan-first:nth-child(1) .book-button-column.right-cell button"
+  payLaterOptionButton:
+    locators:
+      US: "css=#pay-later-button"
+      
+pageValidators: [
+  bookHotelButton.isVisible  
+  ]   
+             
+defaultLocale: "US"   

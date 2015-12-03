@@ -1,0 +1,35 @@
+baseClass: "com.paypal.selion.testcomponents.BasicPageImpl"
+pageTitle:
+  US: "Travel: Cheap Hotels, Air Tickets & Packages | Expedia.com.hk"
+  
+elements:
+  hotelLink:
+    locators:
+      US: "css=#tab-hotel-tab"
+  hotelDestinationTextField:
+    locators:
+      US: "css=#hotel-destination"
+  hotelDestinationLink:
+    locators:
+      US: "css=#aria-option-0"
+  hotelCheckInTextField:
+    locators:
+      US: "css=#hotel-checkin" 
+  hotelCheckOutTextField:
+    locators:
+      US: "css=#hotel-checkout"
+  searchButton:
+    locators:
+      US: "css=#search-button"    
+  departingAndReturningExpediaDatePicker:
+    locators:
+      US: "css=.cal"
+      
+        
+pageValidators: [
+  hotelLink.isVisible  
+  ]
+  
+  
+  
+ 

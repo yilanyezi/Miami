@@ -1,0 +1,22 @@
+baseClass: "com.paypal.selion.testcomponents.BasicPageImpl"
+pageTitle:
+  US: "Expedia: Hotel Search"
+  
+elements:
+  sortByPriceButton:
+    locators:
+      US: "css=li:nth-child(2) .btn-sort.tab"
+  resultsContainer:
+    locators:
+      US: "css=article[id^='hotel']"
+    containerElements:
+      selectLink:
+        locators:
+          US: "css=article[id^='hotel'] a"
+ 
+pageValidators: [
+  resultsContainer.isVisible  
+  ]
+              
+defaultLocale: "US"   
+
