@@ -14,24 +14,23 @@ import com.paypal.selion.annotations.WebTest;
 import com.paypal.selion.platform.utilities.WebDriverWaitUtils;
 
 /**
- * testCase : 
- * 		1. Book Cheapest flight
- * 		2. Book shortest duration flight
- * 		3. Book Duration of flight under 15 hours
+ * testCase : 1. Book Cheapest flight 2. Book shortest duration flight 3. Book
+ * Duration of flight under 15 hours
  * 
  * @author mousumisen
  *
  */
 public class BookingCheapestAndShortestDurationFlight {
-	private String fromFlight = "Beij";
-	private String toFlight = "san fra";
+	private String fromFlight = "Beiji";
+	private String toFlight = "San Fran";
 	private Date departureDate;
 	private Date returningDate;
 	private int journeyStartDay = 21;
 	private String journeyDuration = "15h0m";
+	private String journeyDuration_CH = "15小时0分";
 	private int indexofLowestPriceFlight = 0;
 	private int indexofShortestFlight = 2;
-	
+
 	FlightTicketPageEXT flightTicketPageEXT = new FlightTicketPageEXT();
 	SearchResultPageEXT searchResultPageEXT = new SearchResultPageEXT();
 	ReviewTripPageEXT reviewTripPageEXT = new ReviewTripPageEXT();
@@ -50,57 +49,98 @@ public class BookingCheapestAndShortestDurationFlight {
 	/**
 	 * Test Case 1: select the flight of Duration under 15 hours
 	 */
-
+	@Test
+	@WebTest
 	public void selectTheShorterAndLowestFlight() {
 		this.searchFlightforBooking();
 		searchResultPageEXT.sortFlight(indexofLowestPriceFlight);
-		searchResultPageEXT.selectShorterFlight(journeyDuration);
-		WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModule0");
-		searchResultPageEXT.selectShorterFlight(journeyDuration);
+
+		SearchResultPageEXT searchResultPageEXT = new SearchResultPageEXT();
+		String languageOnPage = searchResultPageEXT.getHtmlLabel().getAttribute("data-language");
+		System.out.println(languageOnPage);
+		if (languageOnPage.contains("en_")) {
+
+			// select the departing flight ticket
+			searchResultPageEXT.selectShorterFlight(journeyDuration);
+			WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModule0");
+
+			// select the returning flight ticket
+			searchResultPageEXT.selectShorterFlight(journeyDuration);
+		} else {
+			WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModule0");
+
+			// select the departing flight ticket
+			searchResultPageEXT.selectShorterFlight(journeyDuration_CH);
+
+			WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModule0");
+
+			// select the returning flight ticket
+			searchResultPageEXT.selectShorterFlight(journeyDuration_CH);
+		}
+
+		// decline the hotel booking
 		searchResultPageEXT.clickDeclineHotelBookingLink();
-		System.out.println("Successfully selected Shortest Duration Flight from Beijing to San Fran. under duration 15 hours.");
+		System.out.println(
+				"Successfully selected Shortest Duration Flight from Beijing to San Fran. under duration 15 hours.");
+
+		// rewiew the trip message
+		reviewTripPageEXT.ReviewTripDetails();
 	}
-	
+
 	/**
 	 * Test Case 2: Book the Cheapest flight
-	 * @throws InterruptedException 
+	 * 
 	 */
 	@Test
 	@WebTest
-	public void selectCheapestFlight() throws InterruptedException {
+	public void selectCheapestFlight() {
 		this.searchFlightforBooking();
 		searchResultPageEXT.sortFlight(indexofLowestPriceFlight);
 		WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModuleList");
-		
-		searchResultPageEXT.selectFirstFlight();
+
+		// select the departing flight ticket
+		searchResultPageEXT.selectFlight();
 		WebDriverWaitUtils.waitUntilElementIsPresent("css=.title-city-text");
 		WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModule0");
-		
-		searchResultPageEXT.selectFirstFlight();
+
+		// select the returning flight ticket
+		searchResultPageEXT.selectFlight();
+
+		// decline the hotel booking
 		searchResultPageEXT.clickDeclineHotelBookingLink();
+		// WebDriverWaitUtils.waitUntilPageIsValidated(reviewTripPageEXT);
+
+		// rewiew the trip message
 		reviewTripPageEXT.ReviewTripDetails();
 	}
-	
+
 	/**
 	 * Test Case 3: Book shortest duration flight
 	 */
-	
+	@Test
+	@WebTest
 	public void selectShortestFlight() {
 		this.searchFlightforBooking();
 		searchResultPageEXT.sortFlight(indexofShortestFlight);
 		WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModuleList");
-		
-		searchResultPageEXT.selectFirstFlight();
+
+		// select the departing flight ticket
+		searchResultPageEXT.selectFlight();
 		WebDriverWaitUtils.waitUntilElementIsPresent("css=.title-city-text");
 		WebDriverWaitUtils.waitUntilElementIsPresent("css=#flightModule0");
-		
-		searchResultPageEXT.selectFirstFlight();
+
+		// select the returning flight ticket
+		searchResultPageEXT.selectFlight();
+
+		// decline the hotel booking
 		searchResultPageEXT.clickDeclineHotelBookingLink();
-		
+		// rewiew the trip message
+		reviewTripPageEXT.ReviewTripDetails();
 	}
 
 	/**
 	 * method to generate next Monday
+	 * 
 	 * @return
 	 */
 	public Date genarateNextMonday() {
@@ -114,6 +154,7 @@ public class BookingCheapestAndShortestDurationFlight {
 
 	/**
 	 * method to generate return date
+	 * 
 	 * @return
 	 */
 	public Date genarateReturnDay(Date date, int during) {
@@ -122,9 +163,10 @@ public class BookingCheapestAndShortestDurationFlight {
 		ca.add(Calendar.DAY_OF_YEAR, during);
 		return ca.getTime();
 	}
-	
+
 	/**
 	 * Search flight for booking
+	 * 
 	 * @return
 	 */
 	public void searchFlightforBooking() {

@@ -1,6 +1,6 @@
 baseClass: "com.paypal.selion.testcomponents.BasicPageImpl"
 pageTitle:
-  US: "Expedia 智游网 旅游预订：度假、廉价航班、航空机票、票价优惠"
+  US: "Travel: Cheap Hotels, Air Tickets & Packages | Expedia.com.hk"
   
 elements:
   flightLink:
@@ -13,7 +13,12 @@ elements:
   flightToTextField:
     locators:
       US: "css=#flight-destination"
-      
+  FlightFromLink:
+    locators:
+      US: "css=#aria-option-0"
+  FlightToLink:
+    locators:
+      US: "css=#aria-option-0"    
   departingDateTextField:
     locators:
       US: "css=#flight-departing" 
@@ -23,6 +28,10 @@ elements:
   searchButton:
     locators:
       US: "css=#search-button"
+  departingAndReturningExpediaDatePicker:
+    locators:
+      US: "css=.cal"
+  
   
 pageValidators: [
   flightLink.isVisible  

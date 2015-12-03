@@ -2,6 +2,9 @@ package ExpediaTestTravel.ExpediaTestTravel.MainObject;
 
 import java.util.Set;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.paypal.selion.platform.grid.Grid;
 import com.paypal.selion.platform.html.Label;
 import com.paypal.selion.platform.utilities.WebDriverWaitUtils;
@@ -37,18 +40,24 @@ public class SearchResultPageEXT extends SearchResultPage {
 	/**
 	 * select the first flight
 	 */
-	public void selectFirstFlight() {
-		getResultsContainer(0).getSelectButton().click();
+	public void selectFlight() {
+		getResultsContainer(0).getSelectButton().clickAndExpect(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#flightModule0")));
 	}
 
 	public void selectShorterFlight(String expectedTime) {
 		int size = getResultsContainer().size();
+		boolean flag = false;
 		for (int i = 0; i < size; i++) {
+			flag = false;
 			Label a = getResultsContainer(i).getDurationLabel();
 			if (isShorterThanExpected(a.getText(), expectedTime)) {
 				getResultsContainer(i).getSelectButton().click();
+				flag = true;
 				break;
 			}
+		}
+		if(!flag){
+			System.err.println("no ticket");
 		}
 
 	}
@@ -59,7 +68,8 @@ public class SearchResultPageEXT extends SearchResultPage {
 	 */
 	public void clickDeclineHotelBookingLink() {
 		if (getDeclineHotelBookingLink().isElementPresent()) {
-			getDeclineHotelBookingLink().click();
+		//	getDeclineHotelBookingLink().clickAndExpect(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#forcedChoiceNoThanks")));
+			getDeclineLink().click();
 			System.out.println("Successfully selected Flight from Beijing to San Fran.");
 		}
 	}
@@ -73,7 +83,10 @@ public class SearchResultPageEXT extends SearchResultPage {
 	private boolean isShorterThanExpected(String time, String expectedTime) {
 
 		String languageOnPage = this.getHtmlLabel().getAttribute("data-language");
-		if (languageOnPage.equals("en_HK")) {
+		System.out.println(languageOnPage);
+		if (languageOnPage.contains("en_")) {
+			
+			System.out.println(time);
 			//if the site is in English language
 			String expectedHours = expectedTime.substring(0,
 					expectedTime.indexOf("h"));
@@ -98,12 +111,15 @@ public class SearchResultPageEXT extends SearchResultPage {
 				}
 			}
 		} else {
+			
+			System.out.println(time);
 			//if the site is in Chinese language
 			String expectedHours = expectedTime.substring(0,
 					expectedTime.indexOf("小"));
 			String expectedMinutes = expectedTime.substring(
 					expectedTime.indexOf("时") + 1, expectedTime.indexOf("分"));
 			String hours = time.substring(0, time.indexOf("小"));
+			
 			String minutes = time.substring(time.indexOf("时") + 1,
 					time.indexOf("分"));
 			hours = hours.trim();

@@ -29,22 +29,23 @@ public class ReviewTripPageEXT extends ReviewTripPage {
 	public void switchWindow() {
 		String window = Grid.driver().getWindowHandle();
 		Set<String> windows = Grid.driver().getWindowHandles();
-
-		for (String windowName : windows) {
-			if (!window.equals(windowName)) {
-				window = windowName;
+		String newWin="";
+		for (String windowHandel : windows) {
+			if (!windowHandel.equals(window)) {
+				newWin =windowHandel ;
+				Grid.driver().switchTo().window(newWin);
 			}
 		}
-		Grid.driver().switchTo().window(window);
+		
 	}
 	
 	/**
 	 * check test result page i.e. review trip page
 	 */
 	public void ReviewTripDetails() {
-		getReviewTripLabel().getText().contains(reviewPageTitle);
+		//getReviewTripLabel().getText().contains(reviewPageTitle);
 		switchWindow();
-		System.out.println("Flight Booked successfully");
+		System.out.println("Flight Booked successfully and rewied!");
 	}
 
 
